@@ -11,10 +11,14 @@
     <!--页面主题区域-->
     <el-container>
       <!--左侧栏-->
-      <el-aside width="200px">
+      <el-aside :width="isCollapse ? '64px': '200px'">
+        <div class="toggle_btn" @click="toggleColl">|||</div>
         <!--unique-opened : 只保持显示一个子菜单-->
         <el-menu
+          :collapse-transition="false"
+          :collapse="isCollapse"
           router
+          :default-active="activeIndex"
           unique-opened
           background-color="#373D41"
           text-color="#fff"
@@ -28,7 +32,8 @@
             </template>
             <!--二级菜单-->
             <!--设置router属性, 启用vueRouter模式会在激活导航时以 index 作为 path 进行路由跳转-->
-            <el-menu-item :index="'/'+ subItem.path" v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item :index="'/'+ subItem.path" v-for="subItem in item.children"
+                          :key="subItem.id" @click="saveIndexStatus('/'+ subItem.path)">
               <i class="el-icon-menu"></i>
               <span>{{ subItem.authName }}</span>
             </el-menu-item>
@@ -46,9 +51,11 @@
 
 <script>
     export default {
-        name: 'Home',
+      name: 'Home',
       data() {
           return {
+            activeIndex: '',
+            isCollapse: false,
             menuList:[],
             // 由于一级菜单图标不一样, 通过id作为key值, 图标类作为value
             iconsObj: {
@@ -61,16 +68,27 @@
           }
       },
       created() {
-          this.getMenuList()
+        this.getMenuList()
+        // /页面刷新时，让对应的二级菜单高亮显示
+        this.activeIndex = window.sessionStorage.getItem('activeIndex')
       },
       methods:{
-          async getMenuList() {
-            const { data: res } = await this.$http.get('menus')
-            if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
-            // 成功则保存到data
-            this.menuList = res.data
-          }
-
+        async getMenuList() {
+          const { data: res } = await this.$http.get('menus')
+          if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+          // 成功则保存到data
+          this.menuList = res.data
+        },
+        // 点击折叠
+        toggleColl() {
+          this.isCollapse = !this.isCollapse
+        },
+        // 点击保存二级菜单的index值，用于设置其高亮显示
+        saveIndexStatus(activeIndex) {
+          this.activeIndex = activeIndex
+          // 保存到本地中，用于页面初始化时设置对应的二级菜单高亮显示
+          window.sessionStorage.setItem('activeIndex', activeIndex)
+        }
       }
     }
 </script>
@@ -93,6 +111,19 @@
         margin-right: 20px;
       }
     }
+  }
+  .el-container{
+    i{
+      margin-right: 5px;
+    }
+  }
+  .toggle_btn{
+    background-color: #4a5064;
+    font-size: 12px;
+    line-height: 24px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
   }
 }
 </style>

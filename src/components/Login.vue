@@ -3,7 +3,7 @@
       <div class="login_box">
       <!--登录表单区域-->
         <!--:model="表单数据对象" :rules="表单验证规则"-->
-        <el-form :model="loginFrom" :rules="loginRules" ref="loginRuleForm" label-width="100px" class="login_form">
+        <el-form :model="loginFrom" :rules="loginRules" ref="loginRuleForm" label-width="0px" class="login_form">
           <el-form-item  prop="username">
             <el-input v-model="loginFrom.username" prefix-icon="iconfont icon-user"></el-input>
           </el-form-item>
@@ -99,5 +99,4 @@
       justify-content: center;
     }
   }
-
 </style>
