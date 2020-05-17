@@ -1,30 +1,30 @@
 <template>
-    <div class="login_container">
-      <div class="login_box">
-      <!--登录表单区域-->
-        <!--:model="表单数据对象" :rules="表单验证规则"-->
-        <el-form :model="loginFrom" :rules="loginRules" ref="loginRuleForm" label-width="0px" class="login_form">
-          <el-form-item  prop="username">
-            <el-input v-model="loginFrom.username" prefix-icon="iconfont icon-user"></el-input>
-          </el-form-item>
-          <el-form-item  prop="password">
-            <el-input v-model="loginFrom.password" prefix-icon="iconfont icon-3702mima"></el-input>
-          </el-form-item>
-          <el-form-item class="btns">
-            <el-button type="primary" @click="loginForm">登录</el-button>
-            <el-button type="info" @click="resetLoginForm">重置</el-button>
-          </el-form-item>
-        </el-form>
+      <div class="login_container">
+        <div class="login_box">
+          <!--登陆表单区域-->
+          <!--:model="表单数据对象" :rules="表单验证规则"-->
+          <el-form :model="loginForm" :rules="loginRules" ref="loginRuleForm" class="login_form" >
+            <el-form-item prop="username">
+              <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input v-model="loginForm.password" prefix-icon="iconfont icon-3702mima"></el-input>
+            </el-form-item>
+            <el-form-item class="btns">
+              <el-button type="primary" @click="loginForm1">登录</el-button>
+              <el-button type="info" @click="resetLoginForm">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
-    </div>
 </template>
 
 <script>
     export default {
         name: 'Login',
-      data() {
+      data () {
           return {
-            loginFrom:{
+            loginForm: {
               username: 'admin',
               password: '123456'
             },
@@ -40,25 +40,27 @@
             }
           }
       },
-      methods:{
-          // 点击重置按钮重置登陆表单
-          resetLoginForm() {
-            this.$refs.loginRuleForm.resetFields()
-          },
-        // 点击登录
-        loginForm() {
-            // 通过表单对象.validate() 获取最终校验结果
+      methods: {
+        //  点击重置登录表单
+        resetLoginForm () {
+          // console.log(this.$refs)
+          this.$refs.loginRuleForm.resetFields()
+        },
+        //  点击登录
+        loginForm1 () {
+        //  通过表单对象. validate() 获取最终校验结果
           this.$refs.loginRuleForm.validate(async valid => {
-            // 如果valid为false, 不执行后面的操作
+            // console.log(valid)
+            // 如果valid为false,不执行后面的操作
             if (!valid) return
-            // 发请求, 使用async await简化异步操作
-           const { data: res } = await this.$http.post('login', this.loginFrom)
+            // 发送请求，使用async await简化异步操作
+            const { data: res } = await this.$http.post('login', this.loginForm)
+            // console.log(res)
             if (res.meta.status !== 200) {
               return this.$message.error(res.meta.msg)
             }
-            // 登录成功的提示框
             this.$message({
-              message: '登陆成功',
+              message: '登录成功',
               type: 'success'
             })
             // 保存token值
@@ -67,16 +69,15 @@
             this.$router.push('/home')
           })
         }
-
       }
     }
 </script>
 
 <style scoped lang="less">
   .login_container {
-    background-color: #2B4B6B;
+    background-color: #2b4b6b;
     height: 100%;
-    .login_box {
+    .login_box{
       width: 450px;
       height: 300px;
       background: #fff;
@@ -92,11 +93,13 @@
         box-sizing: border-box;
         top: 20%;
       }
-
     }
     .btns{
       display: flex;
       justify-content: center;
+    }
+    .el-form-item div{
+      margin-left: 0 !important;
     }
   }
 </style>

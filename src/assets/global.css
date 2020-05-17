@@ -1,31 +1,31 @@
 html,
 body,
-#app{
+#app {
   width: 100%;
   height: 100%;
 }
-*{
+* {
   margin: 0;
   padding: 0;
 }
-.is-success .el-input__inner{
+.is-success .el-input__inner {
   border: 1px solid #67C23A;
 }
-.el-menu{
-  //height: calc(100% - 24px);
+.el-menu {
   height: 100%;
   background-color: #eaedf1;
 }
 .el-submenu .el-menu-item {
   min-width: 199px;
 }
-.el-card{
+.el-card {
   margin-top: 20px;
-  .el-table{
-    margin: 20px 0;
-  }
 }
-.el-cascader__dropdown{
+.el-card .el-table {
+  margin: 20px 0;
+}
+.el-cascader__dropdown {
   height: 200px;
   overflow-y: auto;
 }
+/*# sourceMappingURL=global.css.map */

@@ -1,7 +1,7 @@
 <template>
-    <div>
-      欢迎来到首页
-    </div>
+  <div>
+    欢迎来到首页
+  </div>
 </template>
 
 <script>
